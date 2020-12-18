@@ -1,31 +1,48 @@
-# Este script crea un icono de apagado en el escritorio
+# Este script crea un icono de apagado en el escritorio de GNOME
+# No sé si este método funciona para otros escritorios, así que lo 
+# he limitado al escritorio GNOME.
 
+desktop=`echo $XDG_CURRENT_DESKTOP | grep GNOME | cut -d':' -f2`
+echo desktop
 
-getUsername=`whoami`
-echo $getUsername
+crearIcono() {
 
-# Crea el fichero que hará de icono
-touch /home/$getUsername/Escritorio/boton-apagado_bis.desktop
+    # Obteniendo nombre usuario
+    getUsername=`whoami`
 
-# Variable con la ruta absoluta del icono
-iconPath=`find /home/$getUsername/Escritorio/ -name "boton-apagado_bis.desktop"`
+    # Crea el fichero que hará de icono
+    touch /home/$getUsername/Escritorio/boton-apagado2.desktop
 
-echo '# boton-apagado.desktop #' >> $iconPath
-echo 'FIN PROGRAMA'
+    # Variable con la ruta absoluta del icono
+    iconPath=`find /home/$getUsername/Escritorio/ -name "boton-apagado2.desktop"`
 
+    #tip: Emplea Ctrl + Shif + / para comentar descomentar todas las líneas seleccionadas  
 
+    # Editando el fichero
+    echo '# boton-apagado.desktop #' >> $iconPath
+    echo '[Desktop Entry]' >> $iconPath
+    echo 'Version=1.0' >> $iconPath
+    echo 'Name=Apagar' >> $iconPath
+    echo 'Comment=Aceso directo del boton de apagado' >> $iconPath
+    echo 'Exec=/sbin/shutdown -Ph now' >> $iconPath
+    echo 'Icon=system-shutdown' >> $iconPath
+    echo 'Terminal=false' >> $iconPath
+    echo 'Type=Application' >> $iconPath
+    echo 'Categories=Utility;Application;' >> $iconPath
 
-#tip: Emplea Ctrl + Shif + / para comentar descomentar todas las líneas seleccionadas
-# fichero a crear  
+    # Agregar fichero a .local/share/applications
+    # Esto nos permite que podamos agregar el icono al dock de ubuntu
+    #cp /home/$getUsername/Escritorio/boton-apagado /home/$getUsername/.local/share/applications
 
-# boton-apagado.desktop
-# [Desktop Entry]
-# Version=1.0
-# Name=Apagar
-# Comment=Aceso directo del boton de apagado
-# Exec=/sbin/shutdown -Ph now
-# Icon=system-shutdown
-# Terminal=false
-# Type=Application
-# Categories=Utility;Application;
+    cat ./penguin
+}
 
+if [ $desktop == 'GNOME' ]; then
+    echo "El escritorio es GNOME"
+    crearIcono
+else
+    echo "El escritorio no es GNOME"
+    cat ./error
+fi
+
+# cat ./penguin
