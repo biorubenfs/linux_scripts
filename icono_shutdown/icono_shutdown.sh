@@ -1,6 +1,8 @@
 # Este script crea un icono de apagado en el escritorio de GNOME
 # No sé si este método funciona para otros escritorios, así que lo 
 # he limitado al escritorio GNOME.
+# Una vez creado el icono, el usuario debe ejecutar el programa y aceptar la advertencia de
+# seguridad. IMPORTANTE: el equipo se apagará.
 
 clear
 
@@ -45,12 +47,12 @@ if [ $desktop == 'GNOME' ]; then
     echo "El escritorio es GNOME"
     crearIcono
     cat ./penguin
+    `chmod +x /home/$getUsername/Escritorio/boton-apagado.desktop`
 else
     echo "El escritorio no es GNOME"
     echo "No es seguro crear el icono"
     echo "No se ha creado el icono"
     cat ./error
-    echo ""
 fi
 
 echo "El programa ha finalizado"
